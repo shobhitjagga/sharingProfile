@@ -40,43 +40,20 @@ class SharingProfile
         {
             nMemBlocks[itr.second.size()-1]++;
         }
-
-        // unordered_map<int, vector<int>>::iterator itr;
-        // for(itr = sharingProf.begin(); itr != sharingProf.end(); itr++)
-        // {
-        //     nMemBlocks[itr->second.size()]++;
-        // }
     }
     void printSharingProf()
     {
         for(int i = 0; i < 8; i++)
         {
-            cout << nMemBlocks[i] << endl;
+            cout << "Blocks shared by " << (i+1) << " threads: " << nMemBlocks[i] << endl;
         }
-        cout << blk << endl;
+        cout << "Total number of accessed memory blocks: " << blk << endl;
     }
 
 } sharingProfile;
 
 int main(int argc, char* argv[])
 {
-    // int tid; uint64_t addr;
-    // FILE* fp = fopen(argv[1], "rb");
-    // assert(fp != NULL);
-    // while (!feof(fp)) 
-    // {
-    //     fread(&tid, sizeof(int), 1, fp);
-    //     cout << tid << endl;
-    //     // fread(&addr, sizeof(uint64_t), 1, fp);
-    //     // cout  << tid << " : " << addr << endl; 
-    // }
-    // PyObject* pInt;
-    // Py_Initialize();
-    // FILE* fp = fopen("qwe.py","r");
-    // PyRun_SimpleFile(fp,"qwe.py");
-    // Py_Finalize();
-
-
     ifstream traceFile(argv[1]);
     string text;
     while (getline (traceFile, text)) {
@@ -89,7 +66,6 @@ int main(int argc, char* argv[])
         stream >> hex >> addr;
 
         sharingProfile.updateSharingProf(tid, addr);
-        // cout << addr << endl;
     }
     sharingProfile.updateMemBlocksArray();
     sharingProfile.printSharingProf();

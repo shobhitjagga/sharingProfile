@@ -7,7 +7,6 @@
 #include <vector>
 #include <bits/stdc++.h>
 #include <Python.h>
-// #include "matplotlibcpp.h"
 using namespace std;
 
 uint32_t BlockOffset = 6;
@@ -95,22 +94,15 @@ class AccessDistance
 
 int main(int argc, char* argv[])
 {
-    // int tid; uint64_t addr;
-    // FILE* fp = fopen(argv[1], "rb");
-    // assert(fp != NULL);
-    // while (!feof(fp)) 
-    // {
-    //     fread(&tid, sizeof(int), 1, fp);
-    //     cout << tid << endl;
-    //     // fread(&addr, sizeof(uint64_t), 1, fp);
-    //     // cout  << tid << " : " << addr << endl; 
-    // }
+    
+    //See if this way of calling python by passing arguments from here and plotting could be beneficial
+    // Note the Python.h above, compilation requires g++ part2.cpp -I/usr/include/python2.7(version) -lpython2.7
+
     // PyObject* pInt;
     // Py_Initialize();
     // FILE* fp = fopen("qwe.py","r");
     // PyRun_SimpleFile(fp,"qwe.py");
     // Py_Finalize();
-
 
     ifstream traceFile(argv[1]);
     string text;
@@ -118,12 +110,10 @@ int main(int argc, char* argv[])
         stringstream traceText(text); 
         string stringAddr; 
         while(getline(traceText, stringAddr, ' ')){} 
-        // cout << stringAddr << endl;
         uint64_t addr;
         istringstream stream (stringAddr);
         stream >> hex >> addr;
         accessDistance.updateAccessDist(addr);
-        // cout << addr << endl;
     }
     accessDistance.updateCDF();
     accessDistance.printdValues();
