@@ -9,94 +9,55 @@
 
 using namespace std;
 
-uint32_t BlockOffset = 6;
+uint64_t BlockOffset = 6;
 
 class AccessDistance
 {
-    int N, num_accesses;
-    bool AccDistPerBlock;
-    unordered_map <uint64_t, vector<int>> accessDist;
-    unordered_map <uint64_t, int> lastAccess;
-    map <int, float> cdf;
-    vector<int> dValues;
-    vector<float> fValues;
+    uint64_t num_accesses;
+    uint64_t numReusedBlocks;
+    map <uint64_t, uint64_t> lastAccess;
+    map <uint64_t, uint64_t> cdf;
 
     public:
     AccessDistance()
     {
-        N = 0, num_accesses = 0;
-        AccDistPerBlock = false;
+        num_accesses = 0;
+        numReusedBlocks = 0;
     }
 
     void updateAccessDist(uint64_t addr)
     {
+        num_accesses++;
         uint64_t blockAddress = (addr >> BlockOffset);
         if(lastAccess.find(blockAddress) == lastAccess.end())
         {
-            lastAccess.insert(pair<uint64_t, int> (blockAddress, num_accesses));
+            lastAccess.insert(pair<uint64_t, uint64_t> (blockAddress, num_accesses));
         }
         else
         {
-            int accessDistanceVal = num_accesses - lastAccess[blockAddress];
+            numReusedBlocks++;
+            uint64_t accessDistanceVal = num_accesses - lastAccess[blockAddress];
             if(cdf.find(accessDistanceVal) == cdf.end())
             {
-                cdf.insert(pair<int, float> (accessDistanceVal, 1));
+                cdf.insert(pair<uint64_t, uint64_t> (accessDistanceVal, 1));
             }
             else
             {
                 cdf[accessDistanceVal] += 1;
             }
-            if (AccDistPerBlock)
-            {
-                if(accessDist.find(blockAddress) == accessDist.end())
-                {
-                    accessDist.insert(pair<uint64_t, vector<int>> (blockAddress, {accessDistanceVal}));
-                }
-                else
-                {
-                    accessDist[blockAddress].push_back(accessDistanceVal);
-                }
-            }
             lastAccess[blockAddress] = num_accesses;
-            N++;
-        }
-        num_accesses++;
-    }
-
-    void updateCDF()
-    {
-        float prev = 0;
-        map<int, float>::iterator itr;
-        for(itr = cdf.begin(); itr != cdf.end(); itr++)
-        {
-            itr->second = (prev*N + itr->second)/N;
-            prev = itr->second;
-            dValues.push_back(itr->first);
-            fValues.push_back(itr->second);
         }
     }
 
-    void printdValues()
+    void computeCDF(ofstream &OutputWriter)
     {
-        for(auto i = dValues.begin(); i != dValues.end(); i++)
+        uint64_t sum = 0;
+        long double cdfVal;
+        for(auto itr = cdf.begin(); itr != cdf.end(); itr++)
         {
-            cout << *i << " ";
-        }
-        cout << endl;
-    }
-    void printfValues()
-    {
-        for(auto i = fValues.begin(); i != fValues.end(); i++)
-        {
-            cout << *i << " ";
-        }
-        cout << endl;
-    }
-
-    void printCDFvalues(ofstream &OutputWriter)
-    {
-        for (unsigned long i = 0; i < fValues.size(); i++){
-            OutputWriter << dValues[i] << ", " << fValues[i] << endl;
+            sum += itr->second;
+            cdfVal = (long double)sum/(long double)numReusedBlocks;
+            OutputWriter << itr->first << ", " << cdfVal << endl;
         }
     }
 
@@ -133,6 +94,7 @@ int main(int argc, char* argv[])
         uint64_t addr = stoull(line.substr(line.find("0x"), string::npos), NULL, 16);
         accessDistance.updateAccessDist(addr);
     }
-    accessDistance.updateCDF();
-    accessDistance.printCDFvalues(CDFfile);
+    accessDistance.computeCDF(CDFfile);
+
+    return 0;
 }
