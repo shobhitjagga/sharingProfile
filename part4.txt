@@ -1,0 +1,53 @@
+Prog1
+
+Blocks shared by 1 threads: 412
+Blocks shared by 2 threads: 70
+Blocks shared by 3 threads: 1872
+Blocks shared by 4 threads: 32455
+Blocks shared by 5 threads: 143250
+Blocks shared by 6 threads: 244970
+Blocks shared by 7 threads: 173832
+Blocks shared by 8 threads: 124529
+Total number of accessed memory blocks: 721390
+
+------------------------------------------------
+
+Prog 2
+
+Blocks shared by 1 threads: 398
+Blocks shared by 2 threads: 8262
+Blocks shared by 3 threads: 16384
+Blocks shared by 4 threads: 40957
+Blocks shared by 5 threads: 4
+Blocks shared by 6 threads: 0
+Blocks shared by 7 threads: 1
+Blocks shared by 8 threads: 12
+Total number of accessed memory blocks: 66018
+
+---------------------------------------------------
+
+Prog 3
+
+Blocks shared by 1 threads: 406
+Blocks shared by 2 threads: 63
+Blocks shared by 3 threads: 0
+Blocks shared by 4 threads: 0
+Blocks shared by 5 threads: 0
+Blocks shared by 6 threads: 0
+Blocks shared by 7 threads: 1
+Blocks shared by 8 threads: 65546
+Total number of accessed memory blocks: 66016
+
+---------------------------------------------------
+
+Prog 4
+
+Blocks shared by 1 threads: 8590
+Blocks shared by 2 threads: 57409
+Blocks shared by 3 threads: 6
+Blocks shared by 4 threads: 0
+Blocks shared by 5 threads: 0
+Blocks shared by 6 threads: 1
+Blocks shared by 7 threads: 1
+Blocks shared by 8 threads: 11
+Total number of accessed memory blocks: 66018
