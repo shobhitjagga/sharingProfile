@@ -1,6 +1,15 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
+if [ "clean" = "$1" ]; then
+	rm -f part1 part2 part3 part4
+	cd part3_files && make clean
+	cd ..
+	cd obj-intel64 && rm -rf *
+	cd ..
+	rm -f prog1 prog2 prog3 prog4
+	echo "Cleaned up"
+
+else
 	gcc -O3 -static -pthread prog1.c -o prog1
 	gcc -O3 -static -pthread prog2.c -o prog2
 	gcc -O3 -static -pthread prog3.c -o prog3
@@ -16,10 +25,5 @@ if [ -z $1 ]; then
 	echo "part3 compiled"
 	g++ -o part4 part4.cpp
 	echo "part4 compiled"
-else
-	rm -f part1 part2 part3 part4
-	cd part3_files && make clean
-	cd ..
-	rm -f prog1 prog2 prog3 prog4
-	echo "Cleaned up"
+
 fi

@@ -38,8 +38,6 @@ UINT32 BlockSize = (1 << 6);
 FILE * trace;
 PIN_LOCK pinLock;
 
-// This function is called before every instruction is executed
-// and prints the IP
 VOID RecordMemAccess(VOID *ip, VOID *addr, THREADID tid, UINT32 memSize)
 { 
     PIN_GetLock(&pinLock, tid+1);
